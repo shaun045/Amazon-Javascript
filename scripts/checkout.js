@@ -35,12 +35,25 @@ cart.forEach((cartItem) => {
           $${formatCurrency(matchingProduct.priceCents)}
         </div>
         <div class="product-quantity">
-          <span>
+          <span class="quantity-text">
             Quantity: <span class="quantity-label">${cartItem.quantity}</span>
           </span>
-          <span class="update-quantity-link link-primary">
+          <span class="update-quantity-link link-primary js-update-quantity-link"
+          data-product-id="${matchingProduct.id}">
             Update
           </span>
+
+          <input class="quantity-input js-quantity-input"
+          type="number"
+          min="1"
+          style="width: 30px; display:none;" />
+          
+          <span class="save-quantity-link link-primary js-save-quantity-link"
+          data-product-id="${matchingProduct.id}"
+          style="display: none;">
+          Save
+          </span>
+
           <span class="delete-quantity-link link-primary 
           js-delete-link" data-product-id="${matchingProduct.id}">
             Delete
@@ -111,6 +124,48 @@ document.querySelectorAll('.js-delete-link')
     );
     container.remove();
     calculateCartQuantity();
+  });
+});
+
+// calculateCartQuantity();
+
+document.querySelectorAll('.js-update-quantity-link')
+.forEach((link) => {
+  link.addEventListener('click', () => {
+    const container = link.closest('.product-quantity');
+
+    container.querySelector('.js-quantity-input').style.display = 'inline-block';
+    container.querySelector('.js-save-quantity-link').style.display = 'inline';
+    container.querySelector('.quantity-text').style.display = 'none';
+    link.style.display = 'none';
+  });
+});
+
+document.querySelectorAll('.js-save-quantity-link')
+.forEach((link) => {
+  link.addEventListener('click', () => {
+    const productId = link.dataset.productId;
+    const container = link.closest('.product-quantity');
+    const input = container.querySelector('.js-quantity-input');
+    const newQuantity = Number(input.value);
+
+    if (newQuantity < 1) return;
+
+    cart.forEach((cartItem) => {
+      if (cartItem.productId === productId) {
+        cartItem.quantity += newQuantity;
+      }
+    });
+
+    container.querySelector('.quantity-label').innerText = newQuantity;
+    container.querySelector('.quantity-text').style.display = 'inline';
+    container.querySelector('.js-update-quantity-link').style.display = 'inline';
+
+    input.style.display = 'none';
+    link.style.display = 'none';
+
+    calculateCartQuantity();
+
   });
 });
 
