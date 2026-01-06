@@ -61,7 +61,10 @@ export function calculateCartQuantity() {
 
   document.querySelector('.js-cart-quantity')
   .innerHTML = cartQuantity;
+
+  return cartQuantity;
 }
+
 
 export function updateDeliveryOption(productId, deliveryOptionId) {
   let matchingItem;
@@ -76,3 +79,4 @@ export function updateDeliveryOption(productId, deliveryOptionId) {
 
   saveToStorage();
 }
+
