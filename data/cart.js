@@ -65,8 +65,13 @@ export function calculateCartQuantity() {
     cartQuantity += cartItem.quantity;
   });
 
-  document.querySelector('.js-cart-quantity')
-  .innerHTML = cartQuantity;
+  const cartQuantityElement = document.querySelector('.js-cart-quantity');
+
+  if (cartQuantityElement) {
+    cartQuantityElement.innerHTML = cartQuantity;
+  }
+  // document.querySelector('.js-cart-quantity')
+  // .innerHTML = cartQuantity;
 
   return cartQuantity;
 }
